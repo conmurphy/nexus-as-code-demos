@@ -1,0 +1,21 @@
+---
+apic:
+  fabric_policies:
+    vmware_vmm_domains:
+    - name: My-vCenter
+      access_mode: read-write
+      vlan_pool: esx-hosts-vds
+      vswitch:
+        cdp_policy: system-cdp-disabled
+        lldp_policy: system-lldp-enabled
+        port_channel_policy: system-mac-pinning-physical-nic-load
+      credential_policies:
+        - name: vCenterUser
+          username: administrator@vsphere.local
+          password: !env DCLOUD_VC_PASSWORD # Takes the password from an environment variable 
+      vcenters:
+        - name: vc1
+          hostname_ip: 198.18.133.30
+          datacenter: dCloud-DC
+          credential_policy: vCenterUser
+          dvs_version: 6.6

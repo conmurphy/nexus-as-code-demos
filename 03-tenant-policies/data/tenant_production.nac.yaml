@@ -1,0 +1,54 @@
+---
+apic:
+  tenants:
+    - name: production
+
+      vrfs:
+      - name: production.vrf1
+
+      bridge_domains: 
+        - name: 192.168.10.0_24
+          vrf: production.vrf1
+          subnets: 
+            - ip: 192.168.10.254/24 
+          l3outs: 
+            - to-internet
+
+        - name: 192.168.20.0_24
+          vrf: production.vrf1
+          subnets: 
+            - ip: 192.168.20.253/24 
+          l3outs: 
+            - to-internet
+
+        - name: 192.168.30.0_24
+          description: "from nac again"
+          vrf: production.vrf1
+          subnets: 
+            - ip: 192.168.30.253/24 
+          l3outs: 
+            - to-internet
+        
+      application_profiles:
+        - name: segments
+          endpoint_groups:
+            - name: 192.168.10.0_24
+              bridge_domain: 192.168.10.0_24
+              vmware_vmm_domains:
+                - name: My-vCenter
+                  delimiter: '|'
+
+            - name: 192.168.20.0_24
+              bridge_domain: 192.168.20.0_24
+              physical_domains:
+                - baremetal-servers
+              static_ports:
+                - {vlan: 201, pod_id: 1, node_id: 101, port: 1}
+                - {vlan: 201, pod_id: 1, node_id: 101, port: 2}
+                - {vlan: 201, pod_id: 1, node_id: 101, port: 3}
+
+            - name: 192.168.30.0_24
+              bridge_domain: 192.168.30.0_24
+              vmware_vmm_domains:
+                - name: My-vCenter
+                  delimiter: '|'
