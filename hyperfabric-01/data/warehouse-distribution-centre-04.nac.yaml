@@ -1,0 +1,59 @@
+---
+hyperfabric:
+  fabrics:
+    - name: warehouse-distribution-centre-04
+      nodes:
+        - name: warehouse-distribution-centre-04-leaf01
+          model: HF6100-60L4D
+          ports:
+            - name: Ethernet1_1
+              roles: ["HOST_PORT"] 
+        - name: warehouse-distribution-centre-04-leaf02
+          model: HF6100-60L4D
+        - name: warehouse-distribution-centre-04-leaf03
+          model: HF6100-60L4D
+        - name: warehouse-distribution-centre-04-leaf04
+          model: HF6100-60L4D
+      connections: 
+        - {local_node: warehouse-distribution-centre-04-leaf01, local_port: Ethernet1_31, remote_node: warehouse-distribution-centre-04-leaf02, remote_port: Ethernet1_31}
+        - {local_node: warehouse-distribution-centre-04-leaf01, local_port: Ethernet1_32, remote_node: warehouse-distribution-centre-04-leaf03, remote_port: Ethernet1_31}
+        - {local_node: warehouse-distribution-centre-04-leaf01, local_port: Ethernet1_33, remote_node: warehouse-distribution-centre-04-leaf04, remote_port: Ethernet1_31}
+        - {local_node: warehouse-distribution-centre-04-leaf02, local_port: Ethernet1_32, remote_node: warehouse-distribution-centre-04-leaf03, remote_port: Ethernet1_32}
+        - {local_node: warehouse-distribution-centre-04-leaf02, local_port: Ethernet1_33, remote_node: warehouse-distribution-centre-04-leaf04, remote_port: Ethernet1_32}
+        - {local_node: warehouse-distribution-centre-04-leaf03, local_port: Ethernet1_33, remote_node: warehouse-distribution-centre-04-leaf04, remote_port: Ethernet1_33}
+      vrfs:
+        - name: Vrf-production
+      vnis: 
+        - name: 192.168.10.0_24
+          vrf: Vrf-production
+          svi:
+            ipv4_addresses: ["192.168.10.254/24"]
+            enabled: true
+          members:
+            - nodes: 
+                - node_id: warehouse-distribution-centre-04-leaf01
+                - node_id: warehouse-distribution-centre-04-leaf02
+              port_name: Ethernet1_1
+              vlan_id: 10
+        - name: 192.168.20.0_24
+          vrf: Vrf-production
+          svi:
+            ipv4_addresses: ["192.168.20.254/24"]
+            enabled: true
+          members:
+            - nodes: 
+                - node_id: warehouse-distribution-centre-04-leaf01
+                - node_id: warehouse-distribution-centre-04-leaf02
+              port_name: Ethernet1_1
+              vlan_id: 20
+        - name: 192.168.30.0_24
+          vrf: Vrf-production
+          svi:
+            ipv4_addresses: ["192.168.30.254/24"]
+            enabled: true
+          members:
+            - nodes: 
+                - node_id: warehouse-distribution-centre-04-leaf01
+                - node_id: warehouse-distribution-centre-04-leaf02
+              port_name: Ethernet1_1
+              vlan_id: 30
